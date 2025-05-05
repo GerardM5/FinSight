@@ -31,3 +31,22 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.swp
+*.bak
+
+# Test reports
+/test-output/
+/surefire-reports/
+/jacoco.exec
+
+# Build artifacts
+*.class
+*.jar
+*.war
+*.ear
