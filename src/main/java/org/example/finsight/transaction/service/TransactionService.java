@@ -35,4 +35,40 @@ public class TransactionService {
                 .map(TransactionMapper::toDTO)
                 .collect(Collectors.toList());
     }
+
+    public TransactionDTO getTransactionById(Long id) {
+        Transaction transaction = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Transaction not found"));
+        return TransactionMapper.toDTO(transaction);
+    }
+
+    public void deleteTransaction(Long id, String userEmail) {
+        User user = userService.findByEmail(userEmail);
+        Transaction transaction = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Transaction not found"));
+
+        if (!transaction.getUser().getId().equals(user.getId())) {
+            throw new RuntimeException("No tienes permiso para eliminar esta transacción.");
+        }
+
+        repository.delete(transaction);
+    }
+
+    public TransactionDTO updateTransaction(Long id, TransactionDTO dto, String userEmail) {
+        User user = userService.findByEmail(userEmail);
+        Transaction transaction = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Transaction not found"));
+
+        if (!transaction.getUser().getId().equals(user.getId())) {
+            throw new RuntimeException("No tienes permiso para modificar esta transacción.");
+        }
+
+        transaction.setAmount(dto.getAmount());
+        transaction.setDescription(dto.getDescription());
+        transaction.setDate(dto.getDate());
+        transaction.setCategory(dto.getCategory());
+        transaction.setType(dto.getType());
+
+        return TransactionMapper.toDTO(repository.save(transaction));
+    }
 }

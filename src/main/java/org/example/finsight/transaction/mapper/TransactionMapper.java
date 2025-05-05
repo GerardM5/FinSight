@@ -18,7 +18,7 @@ public class TransactionMapper {
 
     public static Transaction toEntity(TransactionDTO dto) {
         Transaction transaction = new Transaction();
-        transaction.setId(dto.getId());
+        transaction.setId(null);
         transaction.setDescription(dto.getDescription());
         transaction.setAmount(dto.getAmount());
         transaction.setType(dto.getType());
