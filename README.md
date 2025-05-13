@@ -23,8 +23,8 @@ FinSight es una API REST desarrollada en Java con Spring Boot 3 para la gestión
 ### 1. Clonar el repositorio
 
 ```bash
-git clone git@github.com:GerardM5/finsight.git
-cd finsight
+git clone git@github.com:GerardM5/FinSight.git
+cd FinSight
 ```
 
 ### 2. Levantar PostgreSQL con Docker
