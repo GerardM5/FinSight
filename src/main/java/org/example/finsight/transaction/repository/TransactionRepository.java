@@ -4,11 +4,13 @@ import org.example.finsight.auth.model.User;
 import org.example.finsight.stats.dto.CategorySummaryProjection;
 import org.example.finsight.stats.dto.MonthlySummaryProjection;
 import org.example.finsight.transaction.model.Transaction;
+import org.example.finsight.transaction.model.TransactionType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -35,4 +37,19 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
     ORDER BY total DESC
 """)
     List<CategorySummaryProjection> getExpenseSummaryByCategory(@Param("user") User user);
+
+    @Query("SELECT t FROM Transaction t WHERE t.user = :user " +
+            "AND (:category IS NULL OR t.category = :category) " +
+            "AND (:type IS NULL OR t.type = :type) " +
+            "AND (:startDate IS NULL OR t.date >= :startDate) " +
+            "AND (:endDate IS NULL OR t.date <= :endDate) " +
+            "AND (:description IS NULL OR t.description = :description)")
+    List<Transaction> searchTransactions(
+            @Param("user") User user,
+            @Param("category") String category,
+            @Param("type") TransactionType type,
+            @Param("startDate") LocalDate startDate,
+            @Param("endDate") LocalDate endDate,
+            @Param("description") String description
+    );
 }
